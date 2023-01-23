@@ -3,7 +3,7 @@
 #
 
 EXEC = editeur
-OBJETS = functions.o window.o colors.o 
+OBJETS = functions.o window.o colors.o case.o level.o
 NOM_PROJET = jeu_editeur
 
 #
@@ -94,4 +94,7 @@ colors.o: colors.c colors.h
 interface.o: interface.c window.h functions.h image.h colors.h \
  interface.h
 image.o: image.c image.h window.h interface.h functions.h colors.h
-editor.o: editor.c functions.h window.h image.h interface.h colors.h
+case.o: case.c case.h
+editor.o: editor.c functions.h window.h image.h interface.h colors.h case.h
+level.o: level.c level.h case.h
+
