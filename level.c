@@ -8,3 +8,15 @@ void initialiser_level(level_t * level, int num){
 			initialiser_case(&level->matrice_cases[i][j]);
 		}
 }
+
+void afficher_level(level_t * level){
+    int i,j;
+    printf("num level : %d\n\n", level->num);
+    for(i=0 ; i<20 ; i++){
+        printf("\n");
+		for(j=0 ; j<60 ; j++){
+			afficher_case(&level->matrice_cases[i][j]);
+		}
+    }
+    printf("\n\n");
+}

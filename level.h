@@ -7,3 +7,5 @@ typedef struct level
 } level_t;
 
 void initialiser_level(level_t * level, int num);
+
+void afficher_level(level_t * level);

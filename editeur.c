@@ -36,17 +36,15 @@ int main() {
 	int i, j, couleur_1=WHITE, couleur_2=WHITE, posY_tools=0, posX_tools=0, posX_gates=8, ch, num_door=1, num_level=1, posX, posY;
 	char* tools[13] = {"Delete", "Block", "Ladder", "Trap", "Gate", "Key", "Door", "Exit", "Start", "Robot", "Probe", "Life", "Bomb"};
 	int gates_colors[4] = {FD_MAGENTA, FD_GREEN, FD_YELLOW, FD_BLUE};
-	//case_t matrice[20][60];
-	//case_t * level_matrice = &matrice;
-	//case_t * level_matrice[20][60];
 	level_t level;
-    initialiser_level(&level, 1);
 	chtype tab_probe[2][3] = {{ ACS_LRCORNER, ACS_HLINE,  ACS_LLCORNER}, {ACS_RTEE, ACS_HLINE, ACS_LTEE }};
 	chtype tab_robot[4][3] = {{ACS_URCORNER, ACS_BTEE, ACS_ULCORNER}, {ACS_HLINE, ACS_PLUS, ACS_HLINE}, {ACS_LRCORNER, ACS_TTEE, ACS_LLCORNER}, {ACS_URCORNER, ACS_BTEE, ACS_ULCORNER}};
 
 	window_t * w_level = window_create(0, 0, 62, 22, "Level", false);
 	window_t * w_tools = window_create(62, 0, 15, 22, "Tools", false);
 	window_t * w_information = window_create(0, 22, 77, 5, "Informations", false);
+
+	initialiser_level(&level, 1);
 
 	// Colors initialisation and palette definition
   	ncurses_colors();
@@ -55,15 +53,6 @@ int main() {
 	//Mouse initialisation
 	ncurses_init_mouse();
 
-	/*
-	for(i=0 ; i<20 ; i++)
-		for(j=0 ; j<60 ; j++){
-			case_t * case_tmp = NULL;
-			initialiser_case(case_tmp);
-			level_matrice[i][j] = case_tmp;
-			//initialiser_case(&level_matrice[i][j]);
-		}
-	*/
 	window_mvprintw_col(w_tools, 0, 2, WHITE, tools[0]);
 	for(i=1 ; i<13 ; i++)
 		window_mvprintw_col(w_tools, i, 2, RED, tools[i]);
@@ -346,11 +335,7 @@ int main() {
 	window_delete(&w_tools);
 	window_delete(&w_information);
 
-	for(i=0 ; i<20 ; i++){
-		printf("\n\n");
-		for(j=0 ; j<60 ; j++)
-			printf("%d %c ;", level.matrice_cases[i][j].color, level.matrice_cases[i][j].ch);
-	}
+	afficher_level(&level);
 
   	return EXIT_SUCCESS;
 }
