@@ -23,7 +23,7 @@
 #define POSX_MAGENTA 8
 #define POSX_GREEN 9
 #define POSX_YELLOW 10
-#define POSX_BLUE 11
+#define POSX_BLUE 11 
 
 
 int main() {
@@ -33,7 +33,7 @@ int main() {
 
 	//Declarations
 	char ch_1='0', ch_2='1';
-	int i, j, couleur_1=WHITE, couleur_2=WHITE, posY_tools=0, posX_tools=0, posX_gates=8, ch, num_door=1, num_level=1, posX, posY;
+	int i, j, gate_tmp=GATE_MAGENTA, key_tmp=KEY_MAGENTA, couleur_1=WHITE, couleur_2=WHITE, posY_tools=0, posX_tools=0, posX_gates=8, ch, num_door=1, num_level=1, posX, posY;
 	char* tools[13] = {"Delete", "Block", "Ladder", "Trap", "Gate", "Key", "Door", "Exit", "Start", "Robot", "Probe", "Life", "Bomb"};
 	int gates_colors[4] = {FD_MAGENTA, FD_GREEN, FD_YELLOW, FD_BLUE};
 	level_t level;
@@ -178,25 +178,25 @@ int main() {
 				window_mvprintw_col(w_information, 1, 1, WHITE, "pos(%d,%d)", posX, posY);
 				if(window_isin(w_level, posX, posY)){
 					if(posY_tools == POSY_DELETE){
-						update_case(&level.matrice_cases[posY-1][posX-1], WHITE, ' ');
+						update_case(&level.matrice_cases[posY-1][posX-1], level.matrice_cases[posY-1][posX-1].element, WHITE, ' ');
 						window_mvaddch_col(w_level, posY-1, posX-1, WHITE, ' ');
 					}
 					if(level.matrice_cases[posY-1][posX-1].color == WHITE && level.matrice_cases[posY-1][posX-1].ch == ' '){
 						switch(posY_tools){
 							case POSY_BLOCK :
-								update_case(&level.matrice_cases[posY-1][posX-1], FD_CYAN, ' ');
+								update_case(&level.matrice_cases[posY-1][posX-1], BLOCK, FD_CYAN, ' ');
 								window_mvaddch_col(w_level, posY-1, posX-1, FD_CYAN, ' ');
 								break;
 							case POSY_TRAP :
-								update_case(&level.matrice_cases[posY-1][posX-1], FD_CYAN, '#');
+								update_case(&level.matrice_cases[posY-1][posX-1], TRAP, FD_CYAN, '#');
 								window_mvaddch_col(w_level, posY-1, posX-1, FD_CYAN, '#');
 								break;
 							case POSY_LIFE :
-								update_case(&level.matrice_cases[posY-1][posX-1], RED, 'V');
+								update_case(&level.matrice_cases[posY-1][posX-1], LIFE, RED, 'V');
 								window_mvaddch_col(w_level, posY-1, posX-1, RED, 'V');
 								break;
 							case POSY_BOMB :
-								update_case(&level.matrice_cases[posY-1][posX-1], WHITE, 'o');
+								update_case(&level.matrice_cases[posY-1][posX-1], BOMB, WHITE, 'o');
 								window_mvaddch_col(w_level, posY-1, posX-1, WHITE, 'o');
 								break;
 							case POSY_LADDER:
@@ -205,9 +205,9 @@ int main() {
 								&& level.matrice_cases[posY-1][posX-2].ch==' ' && level.matrice_cases[posY-1][posX-2].color == WHITE
 								&& level.matrice_cases[posY-1][posX-1].ch==' ' && level.matrice_cases[posY-1][posX-1].color == WHITE
 								&& level.matrice_cases[posY-1][posX].ch==' ' && level.matrice_cases[posY-1][posX].color == WHITE){
-									update_case(&level.matrice_cases[posY-1][posX-2], YELLOW, ACS_LTEE);
-									update_case(&level.matrice_cases[posY-1][posX-1], YELLOW, ACS_HLINE);
-									update_case(&level.matrice_cases[posY-1][posX], YELLOW, ACS_RTEE);
+									update_case(&level.matrice_cases[posY-1][posX-2], LADDER, YELLOW, ACS_LTEE);
+									update_case(&level.matrice_cases[posY-1][posX-1], LADDER, YELLOW, ACS_HLINE);
+									update_case(&level.matrice_cases[posY-1][posX], LADDER, YELLOW, ACS_RTEE);
 									window_mvaddch_col(w_level, posY-1, posX-2, YELLOW, ACS_LTEE);
 									window_mvaddch_col(w_level, posY-1, posX-1, YELLOW, ACS_HLINE);
 									window_mvaddch_col(w_level, posY-1, posX, YELLOW, ACS_RTEE);
@@ -217,7 +217,7 @@ int main() {
 								if(window_isin(w_level, posX-1, posY) && window_isin(w_level, posX+1, posY) && window_isin(w_level, posX, posY-3)){
 									for(i=0 ; i<4 ; i++)
 										for(j=0 ; j<3 ; j++){
-											update_case(&level.matrice_cases[posY-1-i][posX-j], FD_MAGENTA, ' ');
+											update_case(&level.matrice_cases[posY-1-i][posX-j], START, FD_MAGENTA, ' ');
 											window_mvaddch_col(w_level, posY-1-i, posX-j, FD_MAGENTA, ' ');
 										}
 								}
@@ -226,7 +226,7 @@ int main() {
 								if(window_isin(w_level, posX-1, posY) && window_isin(w_level, posX+1, posY) && window_isin(w_level, posX, posY-3)){
 									for(i=0 ; i<4 ; i++)
 										for(j=0 ; j<3 ; j++){
-											update_case(&level.matrice_cases[posY-1-i][posX-j], FD_YELLOW, ' ');
+											update_case(&level.matrice_cases[posY-1-i][posX-j], EXIT, FD_YELLOW, ' ');
 											window_mvaddch_col(w_level, posY-1-i, posX-j, FD_YELLOW, ' ');
 										}
 								}
@@ -235,7 +235,7 @@ int main() {
 								if(window_isin(w_level, posX-1, posY) && window_isin(w_level, posX+1, posY) && window_isin(w_level, posX, posY-3)){
 									for(i=0 ; i<3 ; i++)
 										for(j=0 ; j<3 ; j++){
-											update_case(&level.matrice_cases[posY-1-i][posX-j], FD_GREEN, ' ');
+											update_case(&level.matrice_cases[posY-1-i][posX-j], DOOR+num_door, FD_GREEN, ' ');
 											window_mvaddch_col(w_level, posY-1-i, posX-j, FD_GREEN, ' ');
 										}
 									if(num_door<10){
@@ -246,9 +246,9 @@ int main() {
 										ch_1 = ((int)num_door/10)+'0';
 										ch_2 = (num_door%10)+'0';	
 									}
-									update_case(&level.matrice_cases[posY-4][posX-2], WHITE, ch_1);
-									update_case(&level.matrice_cases[posY-4][posX-1], WHITE, ch_2);
-									update_case(&level.matrice_cases[posY-4][posX], WHITE, ' ');
+									update_case(&level.matrice_cases[posY-4][posX-2], DOOR+num_door , WHITE, ch_1);
+									update_case(&level.matrice_cases[posY-4][posX-1], DOOR+num_door, WHITE, ch_2);
+									update_case(&level.matrice_cases[posY-4][posX], DOOR+num_door, WHITE, ' ');
 									window_mvaddch_col(w_level, posY-4, posX-2, WHITE, ch_1);
 									window_mvaddch_col(w_level, posY-4, posX-1, WHITE, ch_2);
 									window_mvaddch_col(w_level, posY-4, posX, FD_GREEN, ' ');
@@ -258,18 +258,22 @@ int main() {
 								switch(posX_gates){
 									case POSX_MAGENTA :
 										couleur_1 = MAGENTA;
+										gate_tmp = GATE_MAGENTA;
 										break;
 									case POSX_GREEN :
 										couleur_1 = GREEN;
+										gate_tmp = GATE_GREEN;
 										break;
 									case POSX_YELLOW :
 										couleur_1 = YELLOW;
+										gate_tmp = GATE_YELLOW;
 										break;
 									case POSX_BLUE :
 										couleur_1 = BLUE;
+										gate_tmp = GATE_BLUE;
 										break;	
 								}
-								update_case(&level.matrice_cases[posY-1][posX-1], couleur_1, ACS_PLUS);
+								update_case(&level.matrice_cases[posY-1][posX-1], gate_tmp, couleur_1, ACS_PLUS);
 								window_mvaddch_col(w_level, posY-1, posX-1, couleur_1, ACS_PLUS);
 								break;
 							case POSY_KEY :
@@ -278,22 +282,26 @@ int main() {
 										case POSX_MAGENTA :
 											couleur_1 = MAGENTA;
 											couleur_2 = FD_MAGENTA;
+											key_tmp = KEY_MAGENTA;
 											break;
 										case POSX_GREEN :
 											couleur_1 = GREEN;
 											couleur_2 = FD_GREEN;
+											key_tmp	= KEY_GREEN;
 											break;
 										case POSX_YELLOW :
 											couleur_1 = YELLOW;
 											couleur_2 = FD_YELLOW;
+											key_tmp = KEY_YELLOW;
 											break;
 										case POSX_BLUE :
 											couleur_1 = BLUE;
 											couleur_2 = FD_BLUE;
+											key_tmp = KEY_BLUE;
 											break;	
 									}
-									update_case(&level.matrice_cases[posY-1][posX-1], couleur_1, ACS_LLCORNER);
-									update_case(&level.matrice_cases[posY-2][posX-1], couleur_2, ' ');
+									update_case(&level.matrice_cases[posY-1][posX-1], key_tmp, couleur_1, ACS_LLCORNER);
+									update_case(&level.matrice_cases[posY-2][posX-1], key_tmp, couleur_2, ' ');
 									window_mvaddch_col(w_level, posY-1, posX-1, couleur_1, ACS_LLCORNER);
 									window_mvaddch_col(w_level, posY-2, posX-1, couleur_2, ' ');								
 								}
@@ -302,7 +310,7 @@ int main() {
 								if(window_isin(w_level, posX-1, posY-1) && window_isin(w_level, posX+1, posY-1)){
 									for(i=0 ; i<2 ; i++)
 										for(j=0 ; j<3 ; j++){
-											update_case(&level.matrice_cases[posY-1-i][posX-j], WHITE, tab_probe[i][j]);
+											update_case(&level.matrice_cases[posY-1-i][posX-j], PROBE, WHITE, tab_probe[i][j]);
 											window_mvaddch_col(w_level, posY-1-i, posX-j, WHITE, tab_probe[i][j]);
 										}
 								}
@@ -311,7 +319,7 @@ int main() {
 								if(window_isin(w_level, posX-1, posY-3) && window_isin(w_level, posX+1, posY-3)){
 									for(i=0 ; i<4 ; i++)
 										for(j=0 ; j<3 ; j++){
-											update_case(&level.matrice_cases[posY-1-i][posX-j], WHITE, tab_robot[i][j]);
+											update_case(&level.matrice_cases[posY-1-i][posX-j], ROBOT, WHITE, tab_robot[i][j]);
 											window_mvaddch_col(w_level, posY-1-i, posX-j, WHITE, tab_robot[i][j]);
 										}
 								}

@@ -13,7 +13,7 @@ void afficher_level(level_t * level){
     int i,j;
     printf("num level : %d\n\n", level->num);
     for(i=0 ; i<20 ; i++){
-        printf("\n");
+        printf("\n\n");
 		for(j=0 ; j<60 ; j++){
 			afficher_case(&level->matrice_cases[i][j]);
 		}
