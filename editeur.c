@@ -48,7 +48,7 @@ int main() {
 
 	// Colors initialisation and palette definition
   	ncurses_colors();
-	palette();
+	palette(); 
 
 	//Mouse initialisation
 	ncurses_init_mouse();
