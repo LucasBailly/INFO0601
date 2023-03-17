@@ -1,5 +1,6 @@
 #include "case.h"
 #include <stdlib.h>
+
 typedef struct level
 {
     int num ;

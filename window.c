@@ -20,7 +20,7 @@ window_t *window_create(int posX, int posY, int width, int height, char *title, 
     // Create main window with the box
     result->box = newwin(height, width, posY, posX);
     box(result->box, 0, 0);
-    wprintw(result->box, title);
+    wprintw(result->box, "%s", title);
     wrefresh(result->box);
 
     // Create inner window

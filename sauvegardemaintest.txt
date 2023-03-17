@@ -1,0 +1,94 @@
+int main(int argc, char* argv[]) {
+	
+	int fd1;
+	
+	off_t pos;
+	int numero;
+	tableAdresse_t tableAdresse1;
+	tableAdresse_t tableAdresse2;
+	tableAdresse1 = creerTableAdresse(0);
+	
+	level_t level1;
+	initialiser_level(&level1, 1);
+	
+	// level_t level2;
+	// initialiser_level(&level2, 2);
+	
+	level_t levelRecup;
+	
+	// tableAdresse3 = creerTableAdresse(1024);
+	// tableAdresse1.tableA[9] = 1024;
+	printf("position table adresse 1 : %ld\n",tableAdresse1.posDebut);
+	
+	
+	// ajoutEntree("fichTest.bin","helloWorld",3);
+	
+	
+	
+	if((fd1 = open("fichTest.bin", O_RDWR|O_CREAT|O_EXCL, S_IRUSR|S_IWUSR)) == -1) {
+		if(errno == EEXIST){
+			// perror("le fichier existe deja");
+			if((fd1 = open("fichTest.bin", O_RDWR, S_IRUSR|S_IWUSR)) == -1){
+				perror("Error opening file");
+				exit(EXIT_FAILURE);
+			}
+		}else{
+			perror("Error creating file");
+			exit(EXIT_FAILURE);
+		}
+    }
+	
+	
+	
+	
+	pos = lseek(fd1, 0, SEEK_SET);
+	printf("position de création : %ld\n",pos);
+	
+	
+	//verification que le place est libre
+	if(read(fd1, &pos , sizeof(off_t)) == -1) {
+		perror("Error reading off_t");
+		exit(EXIT_FAILURE);
+	}
+	if(pos != 0){
+		printf("La table numero 1 a déjà été créé\n");
+	}else{
+		ecrireTableAdresse("fichTest.bin",tableAdresse1);
+	}
+	
+	
+	
+	// ecrireTableAdresse("fichTest.bin",tableAdresse3);
+	
+	// ajoutEntree("fichTest.bin",level1);
+	
+	// ajoutEntree("fichTest.bin",level2);
+	
+	// ajoutEntree("fichTest.bin",level3);
+	
+	// supprimerEntree("fichTest.bin", 3);
+	
+	supprimerEntree("fichTest.bin",1);
+	tableAdresse2 = lireTableAdresse("fichTest.bin",0);
+	
+	afficherTableAdresse(tableAdresse2);
+	
+	levelRecup = chargerEntree("fichTest.bin",1);
+	afficher_level(&levelRecup);
+	
+	pos = lseek(fd1, 120, SEEK_SET);
+	
+	if(read(fd1, &numero , sizeof(int)) == -1) {
+		perror("Error reading int");
+		exit(EXIT_FAILURE);
+	}
+	printf("final numero = %d\n", numero);
+	
+	if(close(fd1) == -1) {
+        perror("Error closing file (2)");
+        exit(EXIT_FAILURE);
+    }
+	
+	
+	return EXIT_SUCCESS;
+}

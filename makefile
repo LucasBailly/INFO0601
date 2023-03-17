@@ -3,7 +3,7 @@
 #
 
 EXEC = editeur
-OBJETS = functions.o window.o colors.o case.o level.o
+OBJECTS = functions.o window.o colors.o case.o level.o tableAdresse.o
 NOM_PROJET = jeu_editeur
 
 #
@@ -17,7 +17,7 @@ NOM_PROJET = jeu_editeur
 #
 
 EXEC_O = $(EXEC:=.o)
-OBJETS_O = $(OBJETS) $(EXEC_O)
+OBJECTS_O = $(OBJECTS) $(EXEC_O)
 
 #
 # ARGUMENTS ET COMPILATEUR
@@ -33,10 +33,10 @@ CCLIBS = -lncurses
 # REGLES
 #
 
-all: msg $(OBJETS) $(EXEC_O)
+all: msg $(OBJECTS) $(EXEC_O)
 	@echo "Creation des executables..."
 	@for i in $(EXEC); do \
-	$(CC) -o $$i $$i.o $(OBJETS) $(CCLIBS); \
+	$(CC) -o $$i $$i.o $(OBJECTS) $(CCLIBS); \
 	done
 	@echo "Termine."
 
@@ -50,7 +50,7 @@ debug: all
 # REGLES PAR DEFAUT
 #
 
-.c.o: .h
+%.o : %.c
 	@cd $(dir $<) && ${CC} ${CCFLAGS} -c $(notdir $<) -o $(notdir $@)
 
 #
@@ -59,7 +59,7 @@ debug: all
 
 clean:
 	@echo "Suppresion des objets, des fichiers temporaires..."
-	@rm -f $(OBJETS) $(EXEC_O)
+	@rm -f $(OBJECTS) $(EXEC_O)
 	@rm -f *~ *#
 	@rm -f $(EXEC)
 	@rm -f dependances
@@ -69,7 +69,7 @@ depend:
 	@echo "Creation des dependances..."
 	@sed -e "/^# DEPENDANCES/,$$ d" makefile > dependances
 	@echo "# DEPENDANCES" >> dependances
-	@for i in $(OBJETS_O); do \
+	@for i in $(OBJECTS_O); do \
 	$(CC) -MM -MT $$i $(CCFLAGS) `echo $$i | sed "s/\(.*\)\\.o$$/\1.c/"` >> dependances; \
 	done
 	@cat dependances > makefile
@@ -91,10 +91,8 @@ archive: clean
 functions.o: functions.c functions.h
 window.o: window.c window.h
 colors.o: colors.c colors.h
-interface.o: interface.c window.h functions.h image.h colors.h \
- interface.h
-image.o: image.c image.h window.h interface.h functions.h colors.h
-case.o: case.c case.h
-editor.o: editor.c functions.h window.h image.h interface.h colors.h case.h
+case.o: case.c case.h colors.h
 level.o: level.c level.h case.h
-
+tableAdresse.o: tableAdresse.c tableAdresse.h level.h case.h
+editeur.o: editeur.c functions.h window.h colors.h tableAdresse.h level.h \
+ case.h
